@@ -18,6 +18,12 @@ const setupStoragePath = () => {
   }
 }
 
+const setupExitKeyEvents = () => {
+  term.on('key', function(name: string) {
+    if (name === 'CTRL_C') process.exit();
+  });
+}
+
 const parseFlags = () => {
   program
     .option("-A, --add <snippet_name_with_extension (example.js)>", "add a new code snippet")
@@ -33,6 +39,7 @@ const parseFlags = () => {
 
 const main = () => {
   setupStoragePath();
+  setupExitKeyEvents();
   parseFlags();
 }
 
