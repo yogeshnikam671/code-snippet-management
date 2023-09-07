@@ -7,7 +7,6 @@ const snippetPath = `${os.homedir()}/.code-snippets`;
 
 export const searchSnippets = (term: Terminal) => {
   let files = fs.readdirSync(snippetPath);
-  term.clear();
   if (!files.length) {
     handleNoSnippetsError(term);
     process.exit();

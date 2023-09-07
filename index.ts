@@ -2,8 +2,8 @@ import { program } from "commander";
 import * as fs from 'fs';
 import * as os from 'os';
 import termkit from 'terminal-kit';
-import { addSnippet } from "./src/add-snippet";
-import { searchSnippets } from "./src/search-snippets";
+import { addSnippet } from "./src/main/add-snippet";
+import { searchSnippets } from "./src/main/search-snippets";
 
 const term = termkit.terminal;
 
