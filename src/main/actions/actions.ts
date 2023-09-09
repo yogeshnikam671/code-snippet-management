@@ -1,10 +1,7 @@
 import { Terminal } from 'terminal-kit';
 import * as fs from 'fs';
-import * as os from 'os';
 import clipboard from 'clipboardy';
-import { openVim } from '../utils/utils';
-
-const snippetPath = `${os.homedir()}/.code-snippets`;
+import { openVim, snippetPath } from '../utils/utils';
 
 export const displaySnippet = (term: Terminal, snippetName: string) => {
   const content = fs.readFileSync(`${snippetPath}/${snippetName}`, 'utf-8');

@@ -1,28 +1,27 @@
 import { Terminal } from 'terminal-kit';
 import * as fs from 'fs';
-import * as os from 'os';
 import { copySnippet, deleteSnippet, displaySnippet, editSnippet } from './actions/actions';
-
-const snippetPath = `${os.homedir()}/.code-snippets`;
+import { snippetPath } from './utils/utils';
+import { promptMessages } from './constants/prompt-messages';
 
 export const searchSnippets = (term: Terminal) => {
   let files = fs.readdirSync(snippetPath);
   if (!files.length) {
     handleNoSnippetsError(term);
-    process.exit();
+    return;
   }
 
-  term.white("\nPress TAB without entering anything to view full list\n");
-  term.white("\nSearch for a snippet (Use TAB for autocompletion): ");
+  term.white(promptMessages.pressTabToViewFullList);
+  term.white(promptMessages.searchForSnippet);
   term.inputField({ autoComplete: files, autoCompleteMenu: true }, (error, input) => {
     if (error) {
-      term.red("Error occurred while listing the snippets: " + error);
-      process.exit();
+      term.red(promptMessages.errorWhileListingSnippets + error);
+      return;
     }
     const validFile = files.includes(input || "");
     if (!validFile) {
-      term.red("\n\nNo such snippet exists\n\n");
-      process.exit();
+      term.red(promptMessages.noSuchSnippetExists);
+      return;
     }
     if (validFile) {
       displayActionsForSelectedFile(term, input || "");
@@ -31,9 +30,8 @@ export const searchSnippets = (term: Terminal) => {
 };
 
 const handleNoSnippetsError = (term: Terminal) => {
-  term.red("No snippets found\n");
-  term.green("Use -A/--add option to add a new snippet\n");
-  process.exit();
+  term.red(promptMessages.noSnippetsFound);
+  term.green(promptMessages.useAddOption);
 }
 
 const displayActionsForSelectedFile = (term: Terminal, snippetName: string) => {
@@ -47,7 +45,7 @@ const displayActionsForSelectedFile = (term: Terminal, snippetName: string) => {
   term.singleColumnMenu(actions, (error, response) => {
     if (error) {
       term.red("Error occurred while listing the snippets: " + error);
-      process.exit();
+      return;
     }
     switch(response.selectedIndex) {
       case 0:
@@ -63,7 +61,7 @@ const displayActionsForSelectedFile = (term: Terminal, snippetName: string) => {
         deleteSnippet(term, snippetName);
         break;
     }
-    process.exit();
+    return;
   });
 };
 

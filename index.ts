@@ -1,17 +1,16 @@
 import { program } from "commander";
 import * as fs from 'fs';
-import * as os from 'os';
 import termkit from 'terminal-kit';
 import { addSnippet } from "./src/main/add-snippet";
 import { searchSnippets } from "./src/main/search-snippets";
+import { snippetPath } from "./src/main/utils/utils";
 
 const term = termkit.terminal;
 
 const setupStoragePath = () => {
-  const path = `${os.homedir()}/.code-snippets`;
   try {
-    if (!fs.existsSync(path)) {
-      fs.mkdirSync(path);
+    if (!fs.existsSync(snippetPath)) {
+      fs.mkdirSync(snippetPath);
     }
   } catch (e) {
     console.log("Error occurred while setting up the storage path: ", e);
@@ -33,7 +32,7 @@ const parseFlags = () => {
   const options = program.opts();
 
   if (options.add) addSnippet(options.add);
-  if(options.search) searchSnippets(term);
+  if (options.search) searchSnippets(term);
 };
 
 
