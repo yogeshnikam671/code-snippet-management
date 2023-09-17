@@ -32,6 +32,7 @@ export const searchSnippets = (term: Terminal) => {
 const handleNoSnippetsError = (term: Terminal) => {
   term.red(promptMessages.noSnippetsFound);
   term.green(promptMessages.useAddOption);
+  process.exit();
 }
 
 const displayActionsForSelectedFile = (term: Terminal, snippetName: string) => {

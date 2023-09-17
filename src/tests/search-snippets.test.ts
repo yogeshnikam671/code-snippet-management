@@ -27,6 +27,7 @@ jest.mock('../main/actions/actions', () => {
 
 describe('search-snippets tests', () => {
   const dummyFile = new fs.Dirent();
+  const realProcess = process;
   
   const mockValidFileInput = () => {
     jest.spyOn(fs, 'readdirSync').mockReturnValue([dummyFile]);
@@ -35,9 +36,15 @@ describe('search-snippets tests', () => {
       callback(null, dummyFile);
     });
   }
-
+  
   beforeAll(() => {
     dummyFile.name = 'example.js';
+    // @ts-ignore
+    global.process = { ...realProcess, exit: jest.fn() };
+  });
+
+  afterAll(() => {
+    global.process = realProcess;
   });
 
   it('should show no snippets found error if there are no snippets found in the snippetPath', async () => {
