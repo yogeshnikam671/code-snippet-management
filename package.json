@@ -4,7 +4,7 @@
   "description": "This is a code snippet managemet cli tool",
   "main": "dist/index.js",
   "scripts": {
-    "start": "bun index.ts",
+    "start": "tsc && node --es-module-specifier-resolution=node dist/index.js",
     "test": "jest"
   },
   "type": "module",
