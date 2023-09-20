@@ -1,13 +1,8 @@
-// write tests for search-snippets.ts file using jest
-
-// Path: search-snippets.test.ts
 import { searchSnippets } from "../main/search-snippets";
-import termkit from 'terminal-kit';
 import * as fs from 'fs';
 import { promptMessages } from "../main/constants/prompt-messages";
 import { copySnippet, deleteSnippet, displaySnippet, editSnippet } from "../main/actions/actions";
-
-const term = termkit.terminal;
+import { term } from "../main/utils/utils";
 
 jest.mock('fs', () => {
   return {
@@ -49,7 +44,7 @@ describe('search-snippets tests', () => {
 
   it('should show no snippets found error if there are no snippets found in the snippetPath', async () => {
     jest.spyOn(fs, 'readdirSync').mockReturnValue([]);
-    searchSnippets(term);
+    searchSnippets();
     expect(term.red).toHaveBeenCalledWith(promptMessages.noSnippetsFound);
     expect(term.green).toHaveBeenCalledWith(promptMessages.useAddOption);
   });
@@ -60,7 +55,7 @@ describe('search-snippets tests', () => {
     jest.spyOn(term, 'inputField').mockImplementation((_, callback) => {
       callback('error', '');
     });
-    searchSnippets(term);
+    searchSnippets();
     expect(term.red).toHaveBeenCalledWith(promptMessages.errorWhileListingSnippets + 'error');
   });
 
@@ -70,7 +65,7 @@ describe('search-snippets tests', () => {
     jest.spyOn(term, 'inputField').mockImplementation((_, callback) => {
       callback(null, 'invalid.js');
     });
-    searchSnippets(term);
+    searchSnippets();
     expect(term.red).toHaveBeenCalledWith(promptMessages.noSuchSnippetExists);
   });
 
@@ -89,7 +84,7 @@ describe('search-snippets tests', () => {
 
     it('show show actions if a valid file is searched', () => {
       mockSelectIndexedOption(0);
-      searchSnippets(term);
+      searchSnippets();
       expect(term.singleColumnMenu).toHaveBeenCalledWith([
         "1. View snippet",
         "2. Edit snippet",
@@ -104,32 +99,32 @@ describe('search-snippets tests', () => {
       jest.spyOn(term, 'singleColumnMenu').mockImplementation((_, callback: any) => {
         callback('error', null);
       });
-      searchSnippets(term);
+      searchSnippets();
       expect(term.red).toHaveBeenCalledWith(promptMessages.errorWhileListingSnippets + 'error');
     });
 
     it('should display snippet if View snippet option is selected', () => {
       mockSelectIndexedOption(0);
-      searchSnippets(term);
-      expect(displaySnippet).toHaveBeenCalledWith(term, {name : dummyFile.name});
+      searchSnippets();
+      expect(displaySnippet).toHaveBeenCalledWith({name : dummyFile.name});
     });
 
     it('should edit snippet if Edit snippet option is selected', () => {
       mockSelectIndexedOption(1);
-      searchSnippets(term);
-      expect(editSnippet).toHaveBeenCalledWith(term, {name : dummyFile.name});
+      searchSnippets();
+      expect(editSnippet).toHaveBeenCalledWith({name : dummyFile.name});
     });
     
     it('should copy snippet if Copy snippet option is selected', () => {
       mockSelectIndexedOption(2);
-      searchSnippets(term);
-      expect(copySnippet).toHaveBeenCalledWith(term, {name : dummyFile.name});
+      searchSnippets();
+      expect(copySnippet).toHaveBeenCalledWith({name : dummyFile.name});
     });
     
     it('should delete snippet if Delete snippet option is selected', () => {
       mockSelectIndexedOption(3);
-      searchSnippets(term);
-      expect(deleteSnippet).toHaveBeenCalledWith(term, {name : dummyFile.name});
+      searchSnippets();
+      expect(deleteSnippet).toHaveBeenCalledWith({name : dummyFile.name});
     });
   });
 });

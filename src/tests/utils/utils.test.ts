@@ -1,6 +1,5 @@
 import * as child_process from 'child_process';
-import * as os from 'os';
-import { openVim, snippetPath } from '../../main/utils/utils';
+import { openVim, snippetPath, term } from '../../main/utils/utils';
 
 jest.mock('child_process', () => {
   return {
@@ -25,5 +24,9 @@ describe('utils tests', () => {
 
   it('should return the snippetPath', () => {
     expect(snippetPath).toEqual('homedir/.code-snippets');
+  });
+
+  it('should return the term object', () => {
+    expect(term).toBeDefined();
   });
 });

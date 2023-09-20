@@ -1,13 +1,13 @@
 import { Terminal } from 'terminal-kit';
 import * as fs from 'fs';
 import { copySnippet, deleteSnippet, displaySnippet, editSnippet } from './actions/actions';
-import { snippetPath } from './utils/utils';
+import { snippetPath, term } from './utils/utils';
 import { promptMessages } from './constants/prompt-messages';
 
-export const searchSnippets = (term: Terminal) => {
+export const searchSnippets = () => {
   let files = fs.readdirSync(snippetPath);
   if (!files.length) {
-    handleNoSnippetsError(term);
+    handleNoSnippetsError();
     return;
   }
 
@@ -24,18 +24,18 @@ export const searchSnippets = (term: Terminal) => {
       return;
     }
     if (validFile) {
-      displayActionsForSelectedFile(term, input || "");
+      displayActionsForSelectedFile(input || "");
     }
   });
 };
 
-const handleNoSnippetsError = (term: Terminal) => {
+const handleNoSnippetsError = () => {
   term.red(promptMessages.noSnippetsFound);
   term.green(promptMessages.useAddOption);
   process.exit();
 }
 
-const displayActionsForSelectedFile = (term: Terminal, snippetName: string) => {
+const displayActionsForSelectedFile = (snippetName: string) => {
   const actions = [
     "1. View snippet",
     "2. Edit snippet",
@@ -50,16 +50,16 @@ const displayActionsForSelectedFile = (term: Terminal, snippetName: string) => {
     }
     switch(response.selectedIndex) {
       case 0:
-        displaySnippet(term, snippetName);
+        displaySnippet(snippetName);
         break;
       case 1:
-        editSnippet(term, snippetName);
+        editSnippet(snippetName);
         break;
       case 2:
-        copySnippet(term, snippetName);
+        copySnippet(snippetName);
         break;
       case 3:
-        deleteSnippet(term, snippetName);
+        deleteSnippet(snippetName);
         break;
     }
     return;

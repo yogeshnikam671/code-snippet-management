@@ -37,7 +37,7 @@ describe('actions test', () => {
   it('should display the snippet content', () => {
     jest.spyOn(fs, 'readFileSync').mockReturnValue('snippet_content');
 
-    displaySnippet(term, 'snippet_name');
+    displaySnippet('snippet_name');
 
     expect(fs.readFileSync).toBeCalledWith(
       `${snippetPath}/snippet_name`,
@@ -50,7 +50,7 @@ describe('actions test', () => {
   });
 
   it('should edit of the snippet', () => {
-    editSnippet(term, 'snippet_name');
+    editSnippet('snippet_name');
 
     expect(openVim).toBeCalledWith(`${snippetPath}/snippet_name`);
     expect(term.green).toHaveBeenCalledWith(expect.stringContaining(
@@ -61,7 +61,7 @@ describe('actions test', () => {
 
   it('should copy the snippet', () => {
     jest.spyOn(fs, 'readFileSync').mockReturnValue('snippet_content');
-    copySnippet(term, 'snippet_name');
+    copySnippet('snippet_name');
 
     expect(clipboard.writeSync).toHaveBeenCalledWith('snippet_content');expect(term.green).toHaveBeenCalledWith(expect.stringContaining(
       'Snippet [snippet_name] copied to clipboard!'
@@ -71,7 +71,7 @@ describe('actions test', () => {
   
   it('should delete the snippet', () => {
     jest.spyOn(fs, 'unlinkSync').mockReturnValue();
-    deleteSnippet(term, 'snippet_name');
+    deleteSnippet('snippet_name');
 
     expect(fs.unlinkSync).toHaveBeenCalledWith(`${snippetPath}/snippet_name`);
     expect(term.green).toHaveBeenCalledWith(expect.stringContaining(

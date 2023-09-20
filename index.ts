@@ -1,11 +1,8 @@
 import { program } from "commander";
 import * as fs from 'fs';
-import termkit from 'terminal-kit';
 import { addSnippet } from "./src/main/add-snippet";
 import { searchSnippets } from "./src/main/search-snippets";
-import { snippetPath } from "./src/main/utils/utils";
-
-const term = termkit.terminal;
+import { snippetPath, term } from "./src/main/utils/utils";
 
 const setupStoragePath = () => {
   try {
@@ -32,7 +29,7 @@ const parseFlags = () => {
   const options = program.opts();
 
   if (options.add) addSnippet(options.add);
-  if (options.search) searchSnippets(term);
+  if (options.search) searchSnippets();
 };
 
 
