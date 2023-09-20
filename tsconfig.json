@@ -10,7 +10,8 @@
     "outDir": "./dist",
     "types": [
       "node",
-      "jest"
+      "jest",
+      "bun-types"
     ]
   },
   "exclude": [

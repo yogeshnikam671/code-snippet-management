@@ -127,5 +127,38 @@ describe('search-snippets tests', () => {
       expect(deleteSnippet).toHaveBeenCalledWith({name : dummyFile.name});
     });
   });
+
+  describe('search action tests', () => {
+    
+    beforeEach(() => {
+      jest.resetAllMocks();
+      mockValidFileInput();
+    });
+
+    it('should copy snippet without showing action menu if copy action is passed as an argument', () => {
+      searchSnippets('copy');
+      expect(copySnippet).toHaveBeenCalledWith({ name: dummyFile.name });
+      expect(term.singleColumnMenu).not.toHaveBeenCalled();
+    });
+
+    it('should edit snippet without showing action menu if edit action is passed as an argument', () => {
+      searchSnippets('edit');
+      expect(editSnippet).toHaveBeenCalledWith({ name: dummyFile.name });
+      expect(term.singleColumnMenu).not.toHaveBeenCalled();
+    });
+
+    it('should display snippet without showing action menu if display action is passed as an argument', () => {
+      searchSnippets('view');
+      expect(displaySnippet).toHaveBeenCalledWith({ name: dummyFile.name });
+      expect(term.singleColumnMenu).not.toHaveBeenCalled();
+    });
+
+    it('should delete snippet without showing action menu if delete action is passed as an argument', () => {
+      searchSnippets('delete');
+      expect(deleteSnippet).toHaveBeenCalledWith({ name: dummyFile.name });
+      expect(term.singleColumnMenu).not.toHaveBeenCalled();
+    });
+  });
+
 });
 

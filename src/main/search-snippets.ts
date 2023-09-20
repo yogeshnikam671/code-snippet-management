@@ -1,10 +1,12 @@
-import { Terminal } from 'terminal-kit';
 import * as fs from 'fs';
 import { copySnippet, deleteSnippet, displaySnippet, editSnippet } from './actions/actions';
 import { snippetPath, term } from './utils/utils';
 import { promptMessages } from './constants/prompt-messages';
 
-export const searchSnippets = () => {
+type SearchSnippetsAction = 'copy' | 'delete' | 'edit' | 'view' | undefined;
+
+
+export const searchSnippets = (action : SearchSnippetsAction = undefined) => {
   let files = fs.readdirSync(snippetPath);
   if (!files.length) {
     handleNoSnippetsError();
@@ -23,8 +25,14 @@ export const searchSnippets = () => {
       term.red(promptMessages.noSuchSnippetExists);
       return;
     }
-    if (validFile) {
-      displayActionsForSelectedFile(input || "");
+    const snippetName = input || "";
+    
+    switch(action) {
+      case 'view': displaySnippet(snippetName); break;
+      case 'edit': editSnippet(snippetName); break;
+      case 'copy': copySnippet(snippetName); break;
+      case 'delete': deleteSnippet(snippetName); break;
+      default: displayActionsForSelectedFile(snippetName);
     }
   });
 };

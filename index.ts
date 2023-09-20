@@ -24,12 +24,20 @@ const parseFlags = () => {
   program
     .option("-A, --add <snippet_name_with_extension (example.js)>", "add a new code snippet")
     .option("-S, --search", "search code snippet/s")
+    .option("-SC", "--search-copy", "search code snippet and copy to clipboard")
+    .option("-SE", "--search-edit", "search code snippet and edit")
+    .option("-SD", "--search-delete", "search code snippet and delete")
+    .option("-SV", "--search-view", "search code snippet and display")
     .parse();
 
   const options = program.opts();
-
+  
   if (options.add) addSnippet(options.add);
-  if (options.search) searchSnippets();
+  if (options.search === true) searchSnippets();
+  if (options.SC === true) searchSnippets('copy');
+  if (options.SE === true) searchSnippets('edit');
+  if (options.SD === true) searchSnippets('delete');
+  if (options.SV === true) searchSnippets('view');
 };
 
 
