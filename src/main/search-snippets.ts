@@ -10,20 +10,20 @@ export const searchSnippets = (action : SearchSnippetsAction = undefined) => {
   let files = fs.readdirSync(snippetPath);
   if (!files.length) {
     handleNoSnippetsError();
-    return;
-  }
+    process.exit();
+}
 
   term.white(promptMessages.pressTabToViewFullList);
   term.white(promptMessages.searchForSnippet);
   term.inputField({ autoComplete: files, autoCompleteMenu: true }, (error, input) => {
     if (error) {
       term.red(promptMessages.errorWhileListingSnippets + error);
-      return;
+      process.exit();
     }
     const validFile = files.includes(input || "");
     if (!validFile) {
       term.red(promptMessages.noSuchSnippetExists);
-      return;
+      process.exit();
     }
     const snippetName = input || "";
     
@@ -54,8 +54,9 @@ const displayActionsForSelectedFile = (snippetName: string) => {
   term.singleColumnMenu(actions, (error, response) => {
     if (error) {
       term.red("Error occurred while listing the snippets: " + error);
-      return;
-    }
+      process.exit();
+      return; // to avoid test failure
+}
     switch(response.selectedIndex) {
       case 0:
         displaySnippet(snippetName);
@@ -70,7 +71,6 @@ const displayActionsForSelectedFile = (snippetName: string) => {
         deleteSnippet(snippetName);
         break;
     }
-    return;
   });
 };
 
